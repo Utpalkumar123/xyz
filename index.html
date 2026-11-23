@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Everest AI Assistant | Everest Industries Limited</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        everest: {
+                            red: '#E31E24',
+                            darkRed: '#B81419',
+                            blue: '#004B87',
+                            darkBlue: '#00335E',
+                            gray: '#F4F6F9',
+                            slate: '#1E293B'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-100 text-slate-800 h-screen flex flex-col overflow-hidden">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm z-10">
+        <div class="flex items-center space-x-3">
+            <!-- Everest Brand Logo Emblem -->
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-everest-red to-everest-darkRed flex items-center justify-center text-white font-bold text-xl shadow-md">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 20h18L12 4 3 20z" />
+                </svg>
+            </div>
+            <div>
+                <div class="flex items-center space-x-2">
+                    <h1 class="font-bold text-slate-900 text-lg leading-tight">Everest AI Assistant</h1>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
+                        Online
+                    </span>
+                </div>
+                <p class="text-xs text-slate-500">Official Building Solutions & Product Support | Everest Industries Ltd.</p>
+            </div>
+        </div>
+
+        <!-- Header Actions -->
+        <div class="flex items-center space-x-2">
+            <!-- Language Toggle -->
+            <button id="langToggle" onclick="toggleLanguage()" class="px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 transition flex items-center space-x-1" title="Switch Language (English / Hinglish)">
+                <svg class="w-4 h-4 text-everest-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+                <span id="langLabel">EN</span>
+            </button>
+
+            <!-- Support Info Modal Trigger -->
+            <button onclick="toggleSupportModal()" class="p-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-everest-blue transition" title="Official Contact & Escalation">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+            </button>
+
+            <!-- Reset Chat -->
+            <button onclick="resetChat()" class="p-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-everest-red transition" title="Reset Conversation">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <div class="flex-1 flex overflow-hidden max-w-7xl w-full mx-auto">
+
+        <!-- Left Sidebar: Solutions Directory (Hidden on Mobile, Visible on Desktop) -->
+        <aside class="hidden lg:flex lg:w-72 flex-col bg-white border-r border-slate-200 p-4 overflow-y-auto">
+            <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Building Solutions</h2>
+            <nav class="space-y-1.5 mb-6">
+                <button onclick="handleQuickTopic('Roofing Solutions')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-everest-red transition flex items-center justify-between group">
+                    <span>1. Roofing Solutions</span>
+                    <span class="text-slate-400 group-hover:text-everest-red">&rarr;</span>
+                </button>
+                <button onclick="handleQuickTopic('Wall Solutions')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-everest-red transition flex items-center justify-between group">
+                    <span>2. Wall Solutions</span>
+                    <span class="text-slate-400 group-hover:text-everest-red">&rarr;</span>
+                </button>
+                <button onclick="handleQuickTopic('Ceiling Solutions')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-everest-red transition flex items-center justify-between group">
+                    <span>3. Ceiling Solutions</span>
+                    <span class="text-slate-400 group-hover:text-everest-red">&rarr;</span>
+                </button>
+                <button onclick="handleQuickTopic('Flooring Solutions')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-everest-red transition flex items-center justify-between group">
+                    <span>4. Flooring Solutions</span>
+                    <span class="text-slate-400 group-hover:text-everest-red">&rarr;</span>
+                </button>
+                <button onclick="handleQuickTopic('Cladding & Facade')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-everest-red transition flex items-center justify-between group">
+                    <span>5. Cladding & Facade</span>
+                    <span class="text-slate-400 group-hover:text-everest-red">&rarr;</span>
+                </button>
+                <button onclick="handleQuickTopic('Pre-Engineered Buildings (PEB)')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-everest-red transition flex items-center justify-between group">
+                    <span>6. Pre-Engineered Buildings</span>
+                    <span class="text-slate-400 group-hover:text-everest-red">&rarr;</span>
+                </button>
+            </nav>
+
+            <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Quick Tools</h2>
+            <div class="space-y-2 mb-6">
+                <button onclick="handleQuickTopic('Compare Products')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium bg-slate-50 border border-slate-200 hover:border-everest-blue hover:text-everest-blue transition flex items-center space-x-2">
+                    <svg class="w-4 h-4 text-everest-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    <span>Product Comparison</span>
+                </button>
+                <button onclick="openLeadModal('Quotation Request')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium bg-slate-50 border border-slate-200 hover:border-everest-blue hover:text-everest-blue transition flex items-center space-x-2">
+                    <svg class="w-4 h-4 text-everest-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>Request a Quotation</span>
+                </button>
+                <button onclick="openLeadModal('Dealer / Distributor Enquiry')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium bg-slate-50 border border-slate-200 hover:border-everest-blue hover:text-everest-blue transition flex items-center space-x-2">
+                    <svg class="w-4 h-4 text-everest-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span>Find / Become a Dealer</span>
+                </button>
+            </div>
+
+            <!-- Official Helpline Card -->
+            <div class="mt-auto bg-gradient-to-br from-everest-blue to-everest-darkBlue rounded-2xl p-4 text-white shadow-sm">
+                <p class="text-xs uppercase tracking-wider text-blue-200 font-semibold mb-1">Direct Support</p>
+                <p class="text-sm font-bold mb-2">1800 4191 991 (Toll-Free)</p>
+                <p class="text-xs text-blue-100 mb-3">Boardline: 022 69772000</p>
+                <a href="https://www.everestind.com/" target="_blank" rel="noopener noreferrer" class="inline-block w-full text-center py-2 px-3 bg-white/10 hover:bg-white/20 rounded-xl text-xs font-medium transition">
+                    Visit everestind.com &nearr;
+                </a>
+            </div>
+        </aside>
+
+        <!-- Center Chat Workspace -->
+        <main class="flex-1 flex flex-col bg-slate-50 relative overflow-hidden">
+            
+            <!-- Chat Messages Container -->
+            <div id="chatContainer" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scroll-smooth">
+                <!-- Messages injected dynamically via JS -->
+            </div>
+
+            <!-- Typing Indicator -->
+            <div id="typingIndicator" class="hidden px-6 py-2">
+                <div class="inline-flex items-center space-x-1.5 bg-white border border-slate-200 px-4 py-2.5 rounded-2xl rounded-bl-none shadow-sm">
+                    <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></span>
+                    <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></span>
+                    <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
+                </div>
+            </div>
+
+            <!-- Quick Suggestion Pills -->
+            <div id="quickChips" class="px-4 sm:px-6 py-2 flex items-center space-x-2 overflow-x-auto no-scrollbar border-t border-slate-200/60 bg-white/60 backdrop-blur-sm">
+                <button onclick="sendSuggestedQuery('Tell me about Everest Roofing Solutions')" class="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-slate-200 text-slate-700 hover:border-everest-red hover:text-everest-red transition shadow-sm">
+                    Roofing Solutions
+                </button>
+                <button onclick="sendSuggestedQuery('Compare Fibre Cement Boards vs Cement Wood Planks')" class="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-slate-200 text-slate-700 hover:border-everest-red hover:text-everest-red transition shadow-sm">
+                    Compare Boards & Planks
+                </button>
+                <button onclick="sendSuggestedQuery('I need help choosing a product for my project')" class="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-slate-200 text-slate-700 hover:border-everest-red hover:text-everest-red transition shadow-sm">
+                    Product Recommendation
+                </button>
+                <button onclick="sendSuggestedQuery('Tell me about Pre-Engineered Buildings (PEB)')" class="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-slate-200 text-slate-700 hover:border-everest-red hover:text-everest-red transition shadow-sm">
+                    PEB Industrial Solutions
+                </button>
+                <button onclick="sendSuggestedQuery('How can I get pricing or a quotation?')" class="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-slate-200 text-slate-700 hover:border-everest-red hover:text-everest-red transition shadow-sm">
+                    Pricing & Quotation
+                </button>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-3 sm:p-4 bg-white border-t border-slate-200">
+                <form id="chatForm" onsubmit="handleUserSubmit(event)" class="max-w-4xl mx-auto flex items-center space-x-2 sm:space-x-3">
+                    <input 
+                        type="text" 
+                        id="userInput" 
+                        placeholder="Ask about Everest products, technical specs, PEB, dealers, or quotations..." 
+                        autocomplete="off"
+                        class="flex-1 bg-slate-100 text-slate-800 placeholder-slate-400 text-sm rounded-xl px-4 py-3 border border-transparent focus:border-everest-blue focus:bg-white focus:outline-none transition"
+                    >
+                    <button 
+                        type="submit" 
+                        class="bg-everest-red hover:bg-everest-darkRed text-white px-5 py-3 rounded-xl font-medium text-sm shadow-sm transition flex items-center space-x-1.5 shrink-0"
+                    >
+                        <span>Send</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Lead Generation / Enquiry Collection Modal -->
+    <div id="leadModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 my-8">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900" id="leadModalTitle">Customer Enquiry & Quotation</h3>
+                    <p class="text-xs text-slate-500">Share your details to connect with the right Everest Industries team.</p>
+                </div>
+                <button onclick="closeLeadModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <form id="leadForm" onsubmit="submitLeadForm(event)" class="space-y-3.5 text-sm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Full Name *</label>
+                        <input type="text" id="leadName" required placeholder="e.g., Rajesh Sharma" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-everest-blue focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Company Name (Optional)</label>
+                        <input type="text" id="leadCompany" placeholder="e.g., Sharma Constructions" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-everest-blue focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Mobile Number *</label>
+                        <input type="tel" id="leadPhone" required placeholder="e.g., +91 98765 43210" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-everest-blue focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Email Address *</label>
+                        <input type="email" id="leadEmail" required placeholder="e.g., name@company.com" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-everest-blue focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">City *</label>
+                        <input type="text" id="leadCity" required placeholder="e.g., Pune" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-everest-blue focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">State *</label>
+                        <input type="text" id="leadState" required placeholder="e.g., Maharashtra" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-everest-blue focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">PIN Code *</label>
+                        <input type="text" id="leadPin" required placeholder="e.g., 411001" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-everest-blue focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Nature of Enquiry *</label>
+                        <select id="leadNature" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-everest-blue focus:outline-none bg-white">
+                            <option value="Quotation Request">Pricing / Commercial Quotation</option>
+                            <option value="Dealer / Distributor Enquiry">Find / Become a Dealer</option>
+                            <option value="PEB Project Enquiry">Customised PEB Project</option>
+                            <option value="Technical Consultation">Technical / Engineering Support</option>
+                            <option value="Bulk Purchase">Bulk Procurement</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Product / Solution *</label>
+                        <select id="leadSolution" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-everest-blue focus:outline-none bg-white">
+                            <option value="Roofing Solutions">Roofing Solutions</option>
+                            <option value="Boards and Panels">Boards and Panels</option>
+                            <option value="Wall Solutions">Wall Solutions</option>
+                            <option value="Ceiling Solutions">Ceiling Solutions</option>
+                            <option value="Flooring Solutions">Flooring Solutions</option>
+                            <option value="Cladding and Facade Solutions">Cladding & Facade Solutions</option>
+                            <option value="Pre-Engineered Buildings (PEB)">Pre-Engineered Buildings (PEB)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-700 mb-1">Project Requirements (Area, Usage, Timeline)</label>
+                    <textarea id="leadReq" rows="2" placeholder="Briefly describe your project size, indoor/outdoor usage, or specific requirements..." class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-everest-blue focus:outline-none"></textarea>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-2.5 text-xs text-amber-800">
+                    Note: This assistant prepares your structured enquiry summary so you can share it directly with the relevant Everest Industries department.
+                </div>
+
+                <div class="flex justify-end space-x-2 pt-2">
+                    <button type="button" onclick="closeLeadModal()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl bg-everest-blue hover:bg-everest-darkBlue text-white font-medium shadow-sm">Prepare Enquiry Summary</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Official Support & Escalation Modal -->
+    <div id="supportModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <h3 class="text-lg font-bold text-slate-900">Everest Official Support</h3>
+                <button onclick="toggleSupportModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="space-y-3 text-sm text-slate-700">
+                <p class="text-xs text-slate-500">For structural engineering calculations, complex technical issues, product complaints, bulk orders, or dealership approvals, please connect directly:</p>
+                
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <p class="text-xs text-slate-500">Toll-Free Customer Helpline</p>
+                    <p class="font-bold text-everest-blue text-base">1800 4191 991</p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <p class="text-xs text-slate-500">Corporate Boardline</p>
+                    <p class="font-bold text-slate-800">022 69772000</p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <p class="text-xs text-slate-500">Boards & Panels Enquiries</p>
+                    <p class="font-bold text-everest-red">boardsandpanels@everestind.com</p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <p class="text-xs text-slate-500">Official Website & Documentation</p>
+                    <a href="https://www.everestind.com/" target="_blank" rel="noopener noreferrer" class="font-semibold text-everest-blue underline">https://www.everestind.com/</a>
+                </div>
+            </div>
+            <div class="mt-5 flex justify-end">
+                <button onclick="toggleSupportModal()" class="px-5 py-2 rounded-xl bg-slate-800 text-white text-sm font-medium hover:bg-slate-700">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // EVEREST INDUSTRIES KNOWLEDGE BASE (Verified Core Solutions & Rules)
+        // =========================================================================
+        const KNOWLEDGE_BASE = {
+            roofing: {
+                title: "Everest Roofing Solutions",
+                category: "Roofing Solutions & Products",
+                description: "Engineered roofing systems designed for durability, weather resistance, thermal comfort, and long service life across residential, commercial, and industrial structures.",
+                products: [
+                    "Everest Fibre Cement Roofing Sheets (Corrugated & Profiled)",
+                    "Everest Hi-Tech Roofing Sheets (Non-asbestos fibre cement technology)",
+                    "Everest Colour Coated Metal Roofing Sheets",
+                    "Everest Rooflight Polycarbonate Sheets (for natural daylighting)",
+                    "Roofing Accessories (Ridges, Apron Pieces, Barge Boards)"
+                ],
+                benefits: [
+                    "High resistance to corrosion, rust, and extreme weather conditions",
+                    "Superior thermal and acoustic insulation compared to bare metal",
+                    "Fire-resistant and low maintenance over long operational lifespans",
+                    "Suitable for coastal, humid, and heavy-rainfall regions"
+                ],
+                applications: "Industrial sheds, warehouses, agricultural buildings, residential roofs, and commercial complexes."
+            },
+            boardsAndPanels: {
+                title: "Everest Boards and Panels",
+                category: "Fibre Cement Boards & Designer Planks",
+                description: "Versatile, moisture-resistant, and fire-rated fibre cement boards and panels manufactured using autoclaved HPSC (High-Pressure Steam Cured) technology.",
+                products: [
+                    "Everest Standard Fibre Cement Boards (Multi-purpose dry construction)",
+                    "Everest Heavy Duty Boards (High impact & load-bearing applications)",
+                    "Everest Cement Wood Planks (Natural wood-grain texture for facades & soffits)",
+                    "Everest Stone & Designer Cladding Panels",
+                    "Everest Rapicon Panels (Pre-fabricated solid wall panels)"
+                ],
+                benefits: [
+                    "Termite-proof, moisture-resistant, and dimensionally stable",
+                    "Non-combustible / fire-rated safety performance",
+                    "Faster dry construction compared to conventional brick-and-mortar",
+                    "Smooth surface ready for paint, laminate, veneer, or tile finishes"
+                ],
+                applications: "Internal partitions, false ceilings, mezzanine flooring, wet-area wall linings, and exterior facades."
+            },
+            walls: {
+                title: "Everest Wall Solutions",
+                category: "Drywall & Solid Wall Systems",
+                description: "Modern dry-wall partition systems and rapid solid-wall panels engineered for acoustic insulation, fire safety, and fast-track construction.",
+                products: [
+                    "Everest Rapicon Wall Panels (Aerated cementitious core sandwiched between fibre cement boards)",
+                    "Everest Drywall Partition Systems (Fibre cement boards over GI steel framing)"
+                ],
+                benefits: [
+                    "Up to 3x–4x faster installation than conventional brickwork",
+                    "Lightweight construction reduces structural dead load",
+                    "High sound insulation and fire resistance",
+                    "Clean, water-saving dry construction process"
+                ],
+                applications: "Commercial offices, IT parks, hospitals, hotels, educational institutions, and residential apartments."
+            },
+            ceilings: {
+                title: "Everest Ceiling Solutions",
+                category: "Suspended & Concealed False Ceilings",
+                description: "Aesthetic, sag-resistant, and moisture-tolerant ceiling boards and tiles for commercial and residential interiors.",
+                products: [
+                    "Everest Designer Ceiling Tiles (Grid / T-bar suspended systems)",
+                    "Everest Seamless Concealed Ceiling Boards",
+                    "Everest Acoustical & Moisture-Resistant Ceiling Panels"
+                ],
+                benefits: [
+                    "No sagging even in high-humidity environments",
+                    "Conceals electrical, HVAC, and plumbing services cleanly",
+                    "Enhances thermal comfort and room acoustics"
+                ],
+                applications: "Offices, retail showrooms, hospitals, schools, porches, bathrooms, and kitchens."
+            },
+            flooring: {
+                title: "Everest Flooring Solutions",
+                category: "Mezzanine & Heavy-Duty Dry Flooring",
+                description: "High-strength fibre cement boards engineered to support heavy loads in mezzanine floors and dry sub-flooring systems.",
+                products: [
+                    "Everest Heavy Duty Fibre Cement Boards (16mm, 18mm, 20mm+ thickness options)",
+                    "Everest Mezzanine Flooring Systems"
+                ],
+                benefits: [
+                    "High load-bearing capacity and impact resistance",
+                    "Rapid dry installation without curing delays",
+                    "Compatible with tiles, vinyl, carpet, or wooden flooring finishes"
+                ],
+                applications: "Industrial mezzanines, warehouses, office expansions, and prefab structures."
+            },
+            cladding: {
+                title: "Everest Cladding and Facade Solutions",
+                category: "Exterior Wall Cladding & Ventilated Facades",
+                description: "Weather-shielding exterior planks and architectural panels that combine aesthetic appeal with thermal efficiency.",
+                products: [
+                    "Everest Cement Wood Planks (Bevelled, smooth, and wood-grain finishes)",
+                    "Everest Heavy Duty Exterior Cladding Boards",
+                    "Everest Designer Facade Panels"
+                ],
+                benefits: [
+                    "Withstands UV exposure, heavy rain, and temperature fluctuations",
+                    "Authentic timber aesthetics without rotting, warping, or termite damage",
+                    "Improves building envelope thermal insulation"
+                ],
+                applications: "Villas, resorts, commercial exteriors, boundary walls, soffits, and architectural elevations."
+            },
+            peb: {
+                title: "Everest Pre-Engineered Buildings (PEB)",
+                category: "Steel Buildings & Infrastructure Solutions",
+                description: "Custom-designed, factory-engineered steel building structures offering rapid construction, clear-span flexibility, and structural reliability.",
+                subSolutions: [
+                    "Industrial Building Solutions (Manufacturing plants, factories, heavy engineering sheds)",
+                    "Warehousing Solutions (Logistics parks, cold storages, e-commerce fulfillment centers)",
+                    "Infrastructure Building Solutions (Metro stations, airport terminals, commercial complexes, multi-level structures)"
+                ],
+                benefits: [
+                    "Significantly faster project completion compared to conventional RCC/steel",
+                    "Large clear spans maximizing usable floor space",
+                    "Precision-engineered components manufactured under strict quality control",
+                    "Easy future expansion and modular scalability"
+                ],
+                applications: "Manufacturing units, logistics warehouses, industrial parks, and public infrastructure."
+            }
+        };
+
+        // =========================================================================
+        // STATE MANAGEMENT
+        // =========================================================================
+        let currentLang = 'EN'; // 'EN' or 'HINGLISH'
+        let recommendationState = {
+            active: false,
+            step: 0,
+            answers: {}
+        };
+
+        // =========================================================================
+        // INITIALIZATION
+        // =========================================================================
+        window.onload = function() {
+            resetChat();
+        };
+
+        function resetChat() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.innerHTML = '';
+            recommendationState = { active: false, step: 0, answers: {} };
+
+            const greeting = currentLang === 'EN' 
+                ? "Hello! Welcome to Everest Industries. I'm your AI Assistant. I can help you explore our products, building solutions, technical information, and customer support services. How may I assist you today?"
+                : "Namaste! Everest Industries mein aapka swagat hai. Main aapka AI Assistant hoon. Main aapko hamare products, building solutions, technical details aur customer support mein madad kar sakta hoon. Aaj main aapki kya sahayata kar sakta hoon?";
+
+            appendBotMessage(greeting, [
+                { label: "Explore Building Solutions", action: "sendSuggestedQuery('Show all Everest Building Solutions')" },
+                { label: "Help Me Choose a Product", action: "startRecommendationFlow()" },
+                { label: "Request a Quotation", action: "openLeadModal('Quotation Request')" }
+            ]);
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'EN' ? 'HINGLISH' : 'EN';
+            document.getElementById('langLabel').innerText = currentLang === 'EN' ? 'EN' : 'HI/EN';
+            const notice = currentLang === 'EN'
+                ? "Language switched to English. How can I assist you with Everest Industries products or solutions?"
+                : "Language Hinglish mein switch ho gayi hai. Bataiye, Everest Industries ke products ya building solutions ke baare mein main aapki kya madad karoon?";
+            appendBotMessage(notice);
+        }
+
+        // =========================================================================
+        // UI HELPERS (Messages, Formatting, Modals)
+        // =========================================================================
+        function appendUserMessage(text) {
+            const chatContainer = document.getElementById('chatContainer');
+            const wrapper = document.createElement('div');
+            wrapper.className = "flex justify-end";
+            wrapper.innerHTML = `
+                <div class="max-w-[85%] sm:max-w-[75%] bg-everest-blue text-white px-4 py-3 rounded-2xl rounded-br-none shadow-sm text-sm leading-relaxed">
+                    ${escapeHtml(text)}
+                </div>
+            `;
+            chatContainer.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        function appendBotMessage(htmlContent, actionButtons = []) {
+            const chatContainer = document.getElementById('chatContainer');
+            const wrapper = document.createElement('div');
+            wrapper.className = "flex items-start space-x-3";
+
+            let buttonsHtml = '';
+            if (actionButtons && actionButtons.length > 0) {
+                buttonsHtml = `<div class="mt-3 pt-2.5 border-t border-slate-100 flex flex-wrap gap-2">` +
+                    actionButtons.map(btn => `
+                        <button onclick="${btn.action}" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-everest-blue hover:text-white text-slate-700 transition">
+                            ${btn.label}
+                        </button>
+                    `).join('') +
+                `</div>`;
+            }
+
+            wrapper.innerHTML = `
+                <div class="w-8 h-8 rounded-xl bg-everest-red text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 20h18L12 4 3 20z" />
+                    </svg>
+                </div>
+                <div class="max-w-[88%] sm:max-w-[80%] bg-white border border-slate-200/90 text-slate-800 px-4 py-3.5 rounded-2xl rounded-tl-none shadow-xs text-sm leading-relaxed">
+                    <div class="space-y-2">${htmlContent}</div>
+                    ${buttonsHtml}
+                </div>
+            `;
+            chatContainer.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function showTyping(callback) {
+            const indicator = document.getElementById('typingIndicator');
+            indicator.classList.remove('hidden');
+            scrollToBottom();
+            setTimeout(() => {
+                indicator.classList.add('hidden');
+                callback();
+            }, 450);
+        }
+
+        // =========================================================================
+        // INTERACTION HANDLERS
+        // =========================================================================
+        function handleUserSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('userInput');
+            const query = input.value.trim();
+            if (!query) return;
+            input.value = '';
+            processUserQuery(query);
+        }
+
+        function sendSuggestedQuery(query) {
+            processUserQuery(query);
+        }
+
+        function handleQuickTopic(topic) {
+            processUserQuery("Tell me about " + topic);
+        }
+
+        // =========================================================================
+        // GUIDED PRODUCT RECOMMENDATION ENGINE (Step 3 of Conversation Flow)
+        // =========================================================================
+        function startRecommendationFlow() {
+            appendUserMessage("I need help choosing a suitable Everest product for my project.");
+            recommendationState = { active: true, step: 1, answers: {} };
+            showTyping(() => {
+                appendBotMessage(`
+                    <p class="font-semibold text-slate-900">Let's find the right Everest solution for your project.</p>
+                    <p><strong>Question 1 of 3:</strong> What type of project are you working on?</p>
+                `, [
+                    { label: "Residential", action: "answerRecommendation('Residential')" },
+                    { label: "Commercial", action: "answerRecommendation('Commercial')" },
+                    { label: "Industrial / Warehouse", action: "answerRecommendation('Industrial')" }
+                ]);
+            });
+        }
+
+        function answerRecommendation(choice) {
+            appendUserMessage(choice);
+            if (recommendationState.step === 1) {
+                recommendationState.answers.projectType = choice;
+                recommendationState.step = 2;
+                showTyping(() => {
+                    appendBotMessage(`
+                        <p><strong>Question 2 of 3:</strong> Which application area are you looking to build or renovate?</p>
+                    `, [
+                        { label: "Roofing", action: "answerRecommendation('Roofing')" },
+                        { label: "Internal Walls / Partitions", action: "answerRecommendation('Walls')" },
+                        { label: "False Ceiling", action: "answerRecommendation('Ceiling')" },
+                        { label: "Exterior Cladding / Facade", action: "answerRecommendation('Cladding')" },
+                        { label: "Mezzanine Flooring", action: "answerRecommendation('Flooring')" },
+                        { label: "Full Steel Building (PEB)", action: "answerRecommendation('PEB')" }
+                    ]);
+                });
+            } else if (recommendationState.step === 2) {
+                recommendationState.answers.application = choice;
+                recommendationState.step = 3;
+                showTyping(() => {
+                    appendBotMessage(`
+                        <p><strong>Question 3 of 3:</strong> What is your primary performance priority?</p>
+                    `, [
+                        { label: "Moisture & Termite Resistance", action: "answerRecommendation('Moisture & Termite Resistance')" },
+                        { label: "Fast-Track Dry Construction", action: "answerRecommendation('Fast-Track Construction')" },
+                        { label: "Fire & Acoustic Safety", action: "answerRecommendation('Fire & Acoustic Safety')" },
+                        { label: "Heavy Load / Weather Durability", action: "answerRecommendation('Heavy Load & Weather Durability')" }
+                    ]);
+                });
+            } else if (recommendationState.step === 3) {
+                recommendationState.answers.priority = choice;
+                recommendationState.active = false;
+                const { projectType, application, priority } = recommendationState.answers;
+                
+                showTyping(() => {
+                    let recHtml = generateRecommendationResult(projectType, application, priority);
+                    appendBotMessage(recHtml, [
+                        { label: "Request a Quotation", action: "openLeadModal('Quotation Request')" },
+                        { label: "Find a Nearby Dealer", action: "openLeadModal('Dealer / Distributor Enquiry')" },
+                        { label: "Restart Recommendation", action: "startRecommendationFlow()" }
+                    ]);
+                });
+            }
+        }
+
+        function generateRecommendationResult(type, app, priority) {
+            let product = "";
+            let reason = "";
+
+            if (app === 'PEB' || (type === 'Industrial' && app === 'PEB')) {
+                product = "Everest Pre-Engineered Buildings (PEB)";
+                reason = `Ideal for <strong>${type}</strong> projects requiring large clear spans, precision steel engineering, and rapid erection timelines.`;
+            } else if (app === 'Roofing') {
+                product = type === 'Industrial' 
+                    ? "Everest Fibre Cement / Hi-Tech Roofing Sheets & Colour Coated Metal Sheets" 
+                    : "Everest Hi-Tech Roofing Sheets & Rooflight Polycarbonate Sheets";
+                reason = `Provides superior weather protection, thermal comfort, and corrosion resistance suited for <strong>${type}</strong> roofing with a focus on <strong>${priority}</strong>.`;
+            } else if (app === 'Walls') {
+                product = priority === 'Fast-Track Construction' 
+                    ? "Everest Rapicon Solid Wall Panels" 
+                    : "Everest Fibre Cement Board Drywall Partition Systems";
+                reason = `Delivers clean, water-saving dry construction with high fire resistance, moisture protection, and acoustic insulation for <strong>${type}</strong> interiors.`;
+            } else if (app === 'Ceiling') {
+                product = "Everest Designer Ceiling Tiles & Seamless Fibre Cement Ceiling Boards";
+                reason = `Engineered to resist sagging in humid conditions while offering clean aesthetics and fire safety for <strong>${type}</strong> spaces.`;
+            } else if (app === 'Cladding') {
+                product = "Everest Cement Wood Planks & Heavy Duty Exterior Cladding Panels";
+                reason = `Offers natural wood-grain aesthetics with high resistance to rain, UV rays, and termites—eliminating the maintenance issues of natural timber.`;
+            } else if (app === 'Flooring') {
+                product = "Everest Heavy Duty Fibre Cement Boards (Mezzanine Flooring System)";
+                reason = `Designed for high load-bearing strength, impact resistance, and rapid dry installation without wet curing delays.`;
+            } else {
+                product = "Everest Fibre Cement Boards & Panels";
+                reason = `Versatile, moisture-resistant, and fire-rated building boards aligned with your <strong>${priority}</strong> requirement.`;
+            }
+
+            return `
+                <div class="bg-blue-50/70 border border-blue-200 rounded-xl p-3.5">
+                    <p class="text-xs font-semibold text-everest-blue uppercase tracking-wider mb-1">Recommended Solution</p>
+                    <h4 class="font-bold text-slate-900 text-base mb-1.5">${product}</h4>
+                    <p class="text-slate-700 text-xs leading-relaxed mb-2"><strong>Why it fits:</strong> ${reason}</p>
+                    <p class="text-xs text-slate-500"><em>Note: For exact thickness selection and structural load calculations, please consult our technical team or refer to the official technical data sheet on <a href="https://www.everestind.com/" target="_blank" class="underline text-everest-blue">everestind.com</a>.</em></p>
+                </div>
+                <p class="mt-2">Thank you for connecting with Everest Industries. Would you like to request a quotation or find an authorised dealer near you?</p>
+            `;
+        }
+
+        // =========================================================================
+        // CORE NLP / INTENT ROUTER & RESPONSE GENERATOR
+        // =========================================================================
+        function processUserQuery(rawQuery) {
+            appendUserMessage(rawQuery);
+            const q = rawQuery.toLowerCase();
+
+            if (recommendationState.active) {
+                answerRecommendation(rawQuery);
+                return;
+            }
+
+            showTyping(() => {
+                // 1. PRODUCT COMPARISON INTENT
+                if (q.includes('compare') || q.includes('comparison') || q.includes('difference between') || q.includes('vs')) {
+                    appendBotMessage(renderComparisonResponse(), [
+                        { label: "View Boards & Panels", action: "handleQuickTopic('Boards and Panels')" },
+                        { label: "Request a Quotation", action: "openLeadModal('Quotation Request')" }
+                    ]);
+                    return;
+                }
+
+                // 2. RECOMMENDATION INTENT
+                if (q.includes('recommend') || q.includes('choose') || q.includes('which product') || q.includes('suggest') || q.includes('help me select')) {
+                    recommendationState = { active: true, step: 1, answers: {} };
+                    appendBotMessage(`
+                        <p>I would be glad to help you identify the right Everest product based on your project requirements.</p>
+                        <p><strong>Question 1 of 3:</strong> Is your project <strong>Residential</strong>, <strong>Commercial</strong>, or <strong>Industrial</strong>?</p>
+                    `, [
+                        { label: "Residential", action: "answerRecommendation('Residential')" },
+                        { label: "Commercial", action: "answerRecommendation('Commercial')" },
+                        { label: "Industrial", action: "answerRecommendation('Industrial')" }
+                    ]);
+                    return;
+                }
+
+                // 3. PRICING & QUOTATION INTENT (Rule 3E & Anti-Hallucination)
+                if (q.includes('price') || q.includes('cost') || q.includes('rate') || q.includes('quotation') || q.includes('quote') || q.includes('discount') || q.includes('bhav') || q.includes('kimat')) {
+                    appendBotMessage(`
+                        <p class="font-semibold text-slate-900">Pricing & Commercial Quotations</p>
+                        <p>Everest Industries does not publish fixed retail prices online because product pricing depends on several factors:</p>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-700">
+                            <li><strong>Product Type & Specifications:</strong> Sheet profile, board thickness, dimensions, or PEB design complexity.</li>
+                            <li><strong>Order Quantity:</strong> Retail vs. bulk commercial/industrial procurement.</li>
+                            <li><strong>Delivery Location:</strong> Freight, state taxes, and local availability.</li>
+                        </ul>
+                        <p>I can help prepare your enquiry details so our sales team can provide an accurate quotation.</p>
+                        <p class="text-xs text-slate-500 mt-1">Thank you for connecting with Everest Industries. Is there anything else I can help you with?</p>
+                    `, [
+                        { label: "Fill Quotation Request Form", action: "openLeadModal('Quotation Request')" },
+                        { label: "View Support Contacts", action: "toggleSupportModal()" }
+                    ]);
+                    return;
+                }
+
+                // 4. DEALER & DISTRIBUTION INTENT (Rule 3F)
+                if (q.includes('dealer') || q.includes('distributor') || q.includes('distributorship') || q.includes('where to buy') || q.includes('shop') || q.includes('store') || q.includes('dealership')) {
+                    appendBotMessage(`
+                        <p class="font-semibold text-slate-900">Dealer & Distribution Assistance</p>
+                        <p>Whether you want to <strong>purchase Everest products</strong> from an authorised dealer or <strong>apply to become an Everest dealer/distributor</strong>, we can connect you with our regional channel team.</p>
+                        <p>To assist you accurately, please share your <strong>City, State, and PIN Code</strong> using our Dealer Enquiry form, or call our toll-free helpline at <strong>1800 4191 991</strong>.</p>
+                        <p class="text-xs text-slate-500 mt-1">Thank you for connecting with Everest Industries. Is there anything else I can help you with?</p>
+                    `, [
+                        { label: "Submit Dealer / Location Enquiry", action: "openLeadModal('Dealer / Distributor Enquiry')" },
+                        { label: "Call Helpline: 1800 4191 991", action: "toggleSupportModal()" }
+                    ]);
+                    return;
+                }
+
+                // 5. STRUCTURAL / ENGINEERING / COMPLAINT ESCALATION (Rule 3D & 8)
+                if (q.includes('calculation') || q.includes('structural design') || q.includes('load test') || q.includes('complaint') || q.includes('damaged') || q.includes('defective') || q.includes('warranty')) {
+                    appendBotMessage(`
+                        <p class="font-semibold text-slate-900">Technical & Customer Support Escalation</p>
+                        <p>For structural engineering calculations, safety certifications, site inspections, or product complaints/damage reports, our specialised technical and customer care teams will assist you directly.</p>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs space-y-1">
+                            <p><strong>Toll-Free Helpline:</strong> 1800 4191 991</p>
+                            <p><strong>Corporate Boardline:</strong> 022 69772000</p>
+                            <p><strong>Boards & Panels Email:</strong> boardsandpanels@everestind.com</p>
+                            <p><strong>Official Website:</strong> <a href="https://www.everestind.com/" target="_blank" class="text-everest-blue underline">https://www.everestind.com/</a></p>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Thank you for connecting with Everest Industries. Is there anything else I can help you with?</p>
+                    `, [
+                        { label: "Log Technical Consultation Request", action: "openLeadModal('Technical Consultation')" }
+                    ]);
+                    return;
+                }
+
+                // 6. ALL BUILDING SOLUTIONS OVERVIEW
+                if (q.includes('all everest building solutions') || q.includes('building solutions') || q.includes('about everest') || q.includes('portfolio')) {
+                    appendBotMessage(`
+                        <p class="font-semibold text-slate-900">Everest Industries – Complete Building Solutions</p>
+                        <p>Everest Industries Limited offers end-to-end building products and steel construction solutions across six core categories:</p>
+                        <ol class="list-decimal pl-5 space-y-1 text-slate-700">
+                            <li><strong>Roofing Solutions:</strong> Fibre cement, Hi-Tech non-asbestos, colour-coated metal & polycarbonate roof sheets.</li>
+                            <li><strong>Wall Solutions:</strong> Rapicon solid wall panels and dry-wall partition systems.</li>
+                            <li><strong>Ceiling Solutions:</strong> Designer ceiling tiles and seamless moisture-resistant ceiling boards.</li>
+                            <li><strong>Flooring Solutions:</strong> Heavy-duty fibre cement boards for mezzanine and dry flooring.</li>
+                            <li><strong>Cladding & Facade Solutions:</strong> Cement wood planks and architectural exterior cladding panels.</li>
+                            <li><strong>Pre-Engineered Buildings (PEB):</strong> Custom steel buildings for industrial, warehousing, and infrastructure projects.</li>
+                        </ol>
+                        <p class="text-xs text-slate-500 mt-1">Select any solution below to explore detailed features and applications.</p>
+                    `, [
+                        { label: "Roofing", action: "handleQuickTopic('Roofing Solutions')" },
+                        { label: "Boards & Panels", action: "handleQuickTopic('Boards and Panels')" },
+                        { label: "Wall & Ceiling", action: "handleQuickTopic('Wall Solutions')" },
+                        { label: "PEB Buildings", action: "handleQuickTopic('Pre-Engineered Buildings (PEB)')" }
+                    ]);
+                    return;
+                }
+
+                // 7. SPECIFIC SOLUTION / CATEGORY MATCHES
+                if (q.includes('roof')) {
+                    appendBotMessage(formatSolutionCard(KNOWLEDGE_BASE.roofing), getSolutionActions('Roofing Solutions'));
+                    return;
+                }
+                if (q.includes('board') || q.includes('panel') || q.includes('plank') || q.includes('fibre cement') || q.includes('fiber cement')) {
+                    appendBotMessage(formatSolutionCard(KNOWLEDGE_BASE.boardsAndPanels), getSolutionActions('Boards and Panels'));
+                    return;
+                }
+                if (q.includes('wall') || q.includes('rapicon') || q.includes('partition') || q.includes('drywall')) {
+                    appendBotMessage(formatSolutionCard(KNOWLEDGE_BASE.walls), getSolutionActions('Wall Solutions'));
+                    return;
+                }
+                if (q.includes('ceiling') || q.includes('false ceiling')) {
+                    appendBotMessage(formatSolutionCard(KNOWLEDGE_BASE.ceilings), getSolutionActions('Ceiling Solutions'));
+                    return;
+                }
+                if (q.includes('floor') || q.includes('mezzanine')) {
+                    appendBotMessage(formatSolutionCard(KNOWLEDGE_BASE.flooring), getSolutionActions('Flooring Solutions'));
+                    return;
+                }
+                if (q.includes('cladding') || q.includes('facade') || q.includes('exterior')) {
+                    appendBotMessage(formatSolutionCard(KNOWLEDGE_BASE.cladding), getSolutionActions('Cladding and Facade Solutions'));
+                    return;
+                }
+                if (q.includes('peb') || q.includes('pre-engineered') || q.includes('warehouse') || q.includes('industrial building') || q.includes('infrastructure') || q.includes('steel building')) {
+                    appendBotMessage(formatSolutionCard(KNOWLEDGE_BASE.peb), getSolutionActions('Pre-Engineered Buildings (PEB)'));
+                    return;
+                }
+
+                // 8. FALLBACK / UNVERIFIED QUERY (Mandatory Rule 7 Fallback Phrase)
+                appendBotMessage(`
+                    <p>I'm sorry, but I don't have verified information regarding this specific query in my current knowledge base. I recommend contacting the Everest Industries team for accurate assistance.</p>
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs space-y-1 mt-2">
+                        <p><strong>Official Website:</strong> <a href="https://www.everestind.com/" target="_blank" class="text-everest-blue underline">https://www.everestind.com/</a></p>
+                        <p><strong>Toll-Free Number:</strong> 1800 4191 991</p>
+                        <p><strong>Boardline:</strong> 022 69772000</p>
+                        <p><strong>Boards & Panels Enquiries:</strong> boardsandpanels@everestind.com</p>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">Thank you for connecting with Everest Industries. Is there anything else I can help you with?</p>
+                `, [
+                    { label: "Explore Building Solutions", action: "sendSuggestedQuery('Show all Everest Building Solutions')" },
+                    { label: "Submit General Enquiry", action: "openLeadModal('Quotation Request')" }
+                ]);
+            });
+        }
+
+        // =========================================================================
+        // STRUCTURED RESPONSE FORMATTERS
+        // =========================================================================
+        function formatSolutionCard(item) {
+            const listItems = (item.products || item.subSolutions)
+                .map(p => `<li>${p}</li>`)
+                .join('');
+            const benefitItems = item.benefits
+                .map(b => `<li>${b}</li>`)
+                .join('');
+
+            return `
+                <div class="space-y-2.5">
+                    <div>
+                        <span class="inline-block px-2 py-0.5 rounded-md bg-red-50 text-everest-red text-[11px] font-semibold uppercase tracking-wide mb-1">${item.category}</span>
+                        <h3 class="font-bold text-slate-900 text-base">${item.title}</h3>
+                    </div>
+                    <p class="text-slate-700">${item.description}</p>
+                    
+                    <div>
+                        <p class="font-semibold text-slate-800 text-xs uppercase tracking-wider mb-1">${item.products ? 'Key Products' : 'Core Sub-Solutions'}:</p>
+                        <ul class="list-disc pl-5 space-y-0.5 text-slate-700 text-xs">${listItems}</ul>
+                    </div>
+
+                    <div>
+                        <p class="font-semibold text-slate-800 text-xs uppercase tracking-wider mb-1">Key Benefits & Advantages:</p>
+                        <ul class="list-disc pl-5 space-y-0.5 text-slate-700 text-xs">${benefitItems}</ul>
+                    </div>
+
+                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-xs">
+                        <strong>Suitable Applications:</strong> ${item.applications}
+                    </div>
+
+                    <p class="text-xs text-slate-500 pt-1">Thank you for connecting with Everest Industries. Is there anything else I can help you with?</p>
+                </div>
+            `;
+        }
+
+        function getSolutionActions(solutionName) {
+            return [
+                { label: "Request Quotation", action: `openLeadModal('Quotation Request', '${solutionName}')` },
+                { label: "Find Nearby Dealer", action: `openLeadModal('Dealer / Distributor Enquiry', '${solutionName}')` },
+                { label: "Official Brochures & Specs", action: "window.open('https://www.everestind.com/', '_blank')" }
+            ];
+        }
+
+        function renderComparisonResponse() {
+            return `
+                <p class="font-semibold text-slate-900">Product Comparison: Everest Fibre Cement Boards vs. Everest Cement Wood Planks</p>
+                <p class="text-xs text-slate-600">Here is a side-by-side comparison based on documented product applications and features:</p>
+                
+                <div class="overflow-x-auto border border-slate-200 rounded-xl my-2">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-800 border-b border-slate-200">
+                                <th class="p-2.5 font-semibold">Parameter</th>
+                                <th class="p-2.5 font-semibold text-everest-blue">Everest Fibre Cement Boards</th>
+                                <th class="p-2.5 font-semibold text-everest-red">Everest Cement Wood Planks</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr>
+                                <td class="p-2.5 font-medium text-slate-700">Primary Form Factor</td>
+                                <td class="p-2.5">Large flat sheet boards</td>
+                                <td class="p-2.5">Linear planks with wood-grain or smooth texture</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2.5 font-medium text-slate-700">Primary Applications</td>
+                                <td class="p-2.5">Drywall partitions, false ceilings, mezzanine flooring, wall linings</td>
+                                <td class="p-2.5">Exterior wall cladding, architectural facades, soffits, boundary walls</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2.5 font-medium text-slate-700">Surface Finish</td>
+                                <td class="p-2.5">Smooth flat surface suitable for paint, wallpaper, laminates, or tiles</td>
+                                <td class="p-2.5">Natural timber-like grain finish designed for exterior painting/staining</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2.5 font-medium text-slate-700">Core Durability</td>
+                                <td class="p-2.5">Moisture-resistant, fire-rated, termite-proof</td>
+                                <td class="p-2.5">Weather-resistant, UV-stable, fire-rated, termite-proof</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2.5 font-medium text-slate-700">Exact Pricing / Thickness Range</td>
+                                <td class="p-2.5 text-slate-500 italic">Varies by grade (Standard/Heavy Duty) & location; refer to official technical data sheet</td>
+                                <td class="p-2.5 text-slate-500 italic">Varies by profile & location; refer to official technical data sheet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="text-xs text-slate-700"><strong>Which suits your project?</strong> Choose <strong>Fibre Cement Boards</strong> for seamless interior partitions, ceilings, and sub-flooring. Choose <strong>Cement Wood Planks</strong> when you want aesthetic wood-finish exterior facades or decorative cladding without timber maintenance.</p>
+                <p class="text-xs text-slate-500">Thank you for connecting with Everest Industries. Is there anything else I can help you with?</p>
+            `;
+        }
+
+        // =========================================================================
+        // MODAL & LEAD MANAGEMENT FUNCTIONS (Rule 3G)
+        // =========================================================================
+        function openLeadModal(nature = 'Quotation Request', preselectedSolution = '') {
+            document.getElementById('leadModalTitle').innerText = nature;
+            document.getElementById('leadNature').value = nature;
+            if (preselectedSolution) {
+                const solSelect = document.getElementById('leadSolution');
+                for (let i = 0; i < solSelect.options.length; i++) {
+                    if (solSelect.options[i].value === preselectedSolution) {
+                        solSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            document.getElementById('leadModal').classList.remove('hidden');
+        }
+
+        function closeLeadModal() {
+            document.getElementById('leadModal').classList.add('hidden');
+        }
+
+        function toggleSupportModal() {
+            const modal = document.getElementById('supportModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function submitLeadForm(e) {
+            e.preventDefault();
+            const name = document.getElementById('leadName').value.trim();
+            const company = document.getElementById('leadCompany').value.trim() || 'Not specified';
+            const phone = document.getElementById('leadPhone').value.trim();
+            const email = document.getElementById('leadEmail').value.trim();
+            const city = document.getElementById('leadCity').value.trim();
+            const state = document.getElementById('leadState').value.trim();
+            const pin = document.getElementById('leadPin').value.trim();
+            const nature = document.getElementById('leadNature').value;
+            const solution = document.getElementById('leadSolution').value;
+            const req = document.getElementById('leadReq').value.trim() || 'General product/project assistance';
+
+            closeLeadModal();
+            document.getElementById('leadForm').reset();
+
+            appendUserMessage(`Submitted enquiry details for ${nature} (${solution} - ${city}, ${state})`);
+
+            // Determine appropriate routing contact per Rule 8
+            let routingDepartment = "Everest Regional Sales & Customer Support Team";
+            let contactDetail = "Toll-Free: 1800 4191 991 | Boardline: 022 69772000 | Website: https://www.everestind.com/";
+
+            if (solution === 'Boards and Panels' || solution === 'Wall Solutions' || solution === 'Ceiling Solutions' || solution === 'Flooring Solutions' || solution === 'Cladding and Facade Solutions') {
+                routingDepartment = "Everest Boards & Panels Division";
+                contactDetail = "Email: boardsandpanels@everestind.com | Toll-Free: 1800 4191 991";
+            } else if (solution === 'Pre-Engineered Buildings (PEB)') {
+                routingDepartment = "Everest Steel Buildings (PEB) Engineering & Sales Division";
+                contactDetail = "Boardline: 022 69772000 | Toll-Free: 1800 4191 991 | Website: https://www.everestind.com/";
+            }
+
+            showTyping(() => {
+                // Strictly adheres to Rule 3G: Do not claim automated backend submission unless integrated; provide structured summary & routing
+                appendBotMessage(`
+                    <p class="font-semibold text-slate-900">Structured Enquiry Summary Prepared</p>
+                    <p class="text-xs text-slate-600">Thank you, <strong>${escapeHtml(name)}</strong>. I have organised your enquiry details below so you can share them directly with the <strong>${routingDepartment}</strong>:</p>
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs space-y-1 font-mono text-slate-700">
+                        <p><strong>Nature of Enquiry:</strong> ${escapeHtml(nature)}</p>
+                        <p><strong>Solution Interest:</strong> ${escapeHtml(solution)}</p>
+                        <p><strong>Contact Name:</strong> ${escapeHtml(name)} (${escapeHtml(company)})</p>
+                        <p><strong>Phone / Email:</strong> ${escapeHtml(phone)} | ${escapeHtml(email)}</p>
+                        <p><strong>Location:</strong> ${escapeHtml(city)}, ${escapeHtml(state)} - ${escapeHtml(pin)}</p>
+                        <p><strong>Project Details:</strong> ${escapeHtml(req)}</p>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-slate-800">
+                        <p class="font-semibold text-everest-blue mb-1">Recommended Next Step:</p>
+                        <p>Please connect with our team using the official contact channels below (or submit via the Contact Us portal on our website) with these details:</p>
+                        <p class="mt-1 font-medium">${contactDetail}</p>
+                    </div>
+
+                    <p class="text-xs text-slate-500 mt-1">Thank you for connecting with Everest Industries. Is there anything else I can help you with?</p>
+                `, [
+                    { label: "Open everestind.com Contact Page", action: "window.open('https://www.everestind.com/', '_blank')" }
+                ]);
+            });
+        }
+    </script>
+</body>
+</html>
